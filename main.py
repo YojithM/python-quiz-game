@@ -1,3 +1,5 @@
+import database
+
 class Question:
     def __init__(self, question, answer):
         self.question = question
@@ -32,9 +34,22 @@ questions = [
     Question("How many continents are there?", "7")
 ]
 
+conn = database.setup_database()
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM history")
+past_score = cursor.fetchall()
+
+print("Past Scores:")
+for record in past_score:
+    print(f"Name: {record[0]}, Score: {record[1]}")
+
 player = Person(input("Enter your name: "))
 for question in questions:
     if question.ask_question():
         player.add_point()
 
+cursor.execute("INSERT INTO history (name, score) VALUES (?, ?)", (player.name, player.score))
+conn.commit()
 print(f" Great job, {player.name}! You got {player.score} out of {len(questions)} questions right!")
+
+conn.close()
