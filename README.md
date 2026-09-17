@@ -1,23 +1,50 @@
-# Python Quiz Game — Phase 1
+# Python Quiz Game
 
-A terminal-based quiz game. This is the starting point for a bigger
-gamified study app (see the roadmap you and Claude sketched out).
+A desktop quiz app built with Python and Tkinter that adapts to how well you know
+the material. Questions you get wrong keep coming back until you've mastered
+them, and your scores are saved between sessions.
 
-## Run it
+Built as a project to showcase my Python progression from the ground up: starting from basic
+syntax and working up through object-oriented design, persistent storage, GUI
+programming, and spaced-repetition logic.
 
+## Features
+
+- **Interactive GUI** — built with Tkinter, no terminal required
+- **Spaced repetition** — questions you miss are automatically re-asked until
+  you get them right, instead of just moving on
+- **Persistent history** — scores are saved to a local SQLite database and
+  shown at the start of each session, so you can track improvement over time
+- **Content loaded from JSON** — questions live in `questions.json`, so the
+  quiz content can be swapped out (currently: core Python/CS concepts) without
+  touching any code
+
+## How it works
+
+- `main.py` — the game itself: `Question` and `Person` classes, the Tkinter
+  GUI, and the game loop logic (scoring, review rounds, timed feedback)
+- `database.py` — handles all SQLite setup and connections, kept separate from
+  the game logic
+- `questions.json` — the question bank; edit this file to quiz yourself on
+  anything else
+
+## Running it
+
+**Requirements:** Python 3.10+ with Tkinter support (on some systems you may
+need to install it separately, e.g. `brew install python-tk` on macOS with
+Homebrew).
+
+```bash
+python3 main.py
 ```
-python main.py
-```
 
-## Files
+Enter your name when prompted in the terminal, then the quiz window will open.
+Answer each question in the text box and hit Submit — you'll see live
+feedback, and any missed questions will resurface for review before the quiz
+ends.
 
-- `main.py` — the game logic (read the comments, they walk through what
-  each part does)
-- `questions.json` — the question bank. Edit this to quiz yourself on
-  anything — swap in Tamil vocab, SAT words, whatever you want.
+## What's next
 
-## What's next (Phase 2)
-
-Turn `score`, `streak`, etc. into a `Player` class, and turn each question
-into a `Question` class instead of a plain dict. That's your next re-intro
-to Python: object-oriented programming.
+- Multiple-choice support (the JSON format already has room for it)
+- More content packs
+- Difficulty levels / timed rounds
