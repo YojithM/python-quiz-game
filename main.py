@@ -1,4 +1,5 @@
 import database
+import tkinter as tk
 
 class Question:
     def __init__(self, question, answer, times_wrong = 0):
@@ -6,13 +7,10 @@ class Question:
         self.answer = answer
         self.times_wrong = times_wrong
 
-    def ask_question(self):
-        answer = input(self.question + " ")
-        if answer.lower() == self.answer.lower():
-            print("Correct! ✅")
+    def check_answer(self, typed_answer):
+        if typed_answer.lower() == self.answer.lower():
             return True
         else:
-            print("Incorrect! ❌")
             self.times_wrong += 1
             return False
 
@@ -36,45 +34,58 @@ questions = [
     Question("How many continents are there?", "7")
 ]
 
+player = Person(input("What is your name? "))
+
 conn = database.setup_database()
 cursor = conn.cursor()
 cursor.execute("SELECT * FROM history")
-past_score = cursor.fetchall()
+past_results = cursor.fetchall()
 
-print("Past Scores:")
-for record in past_score:
-    print(f"Name: {record[0]}, Score: {record[1]}")
+print("Past Results:")
+for result in past_results:
+    print(f"Name: {result[0]}, Score: {result[1]}")
 
-first_try_correct = 0
-player = Person(input("Enter your name: "))
-for question in questions:
-    if question.ask_question():
+current_index = 0
+
+def clear_feedback():
+    feedback_label.config(text="")
+
+def submit_answer():
+    typed_answer = entry.get()
+    global current_index
+    current_question = questions[current_index]
+
+    if current_question.check_answer(typed_answer):
         player.add_point()
-        first_try_correct += 1
-
-remaining = []
-for question in questions:
-    if question.times_wrong > 0:
-        remaining.append(question)
-
-while remaining:
-    still_wrong = []
-    for question in remaining:
-        if question.ask_question():
-            player.add_point()
-        else:
-            still_wrong.append(question)
-    remaining = still_wrong
-    if remaining:
-        print("Let's try the questions you got wrong again!")
+        feedback_label.config(text="Correct!", fg="green")
     else:
-        print("Great job! You've answered all questions correctly!")
+        feedback_label.config(text=f"Incorrect! The correct answer is: {current_question.answer}", fg="red")
+    
+    entry.delete(0, tk.END)
+    current_index += 1
 
-print(f"\nFirst-try correct: {first_try_correct} out of {len(questions)}")
-print(f"Needed review: {len(questions) - first_try_correct}")
+    if current_index < len(questions):
+        label.config(text=questions[current_index].question)
+        window.after(1500, clear_feedback)
+    else:
+        cursor.execute("INSERT INTO history (name, score) VALUES (?, ?)", (player.name, player.score))
+        conn.commit()
+        feedback_label.config(text=f"Hooray! You've completed the quiz with a score of {player.score}/{len(questions)}", fg="yellow")
 
-cursor.execute("INSERT INTO history (name, score) VALUES (?, ?)", (player.name, player.score))
-conn.commit()
-print(f"Great job, {player.name}! You got {player.score} out of {len(questions)} questions right!")
+window = tk.Tk()
+window.title("Quiz Game")
 
+label = tk.Label(window, text=questions[current_index].question)
+label.pack()
+
+entry = tk.Entry(window)
+entry.pack()
+
+feedback_label = tk.Label(window, text="")
+feedback_label.pack()
+
+button = tk.Button(window, text="Submit", command=submit_answer)
+button.pack()
+
+window.mainloop()
 conn.close()
