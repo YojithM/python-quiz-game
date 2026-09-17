@@ -1,42 +1,46 @@
 [
     {
         "question": "What keyword do you use to define a function in Python?",
-        "options": ["func", "def", "function", "lambda"],
         "answer": "def"
     },
     {
-        "question": "Which data type is created using curly braces {} with key:value pairs?",
-        "options": ["list", "tuple", "dict", "set"],
-        "answer": "dict"
+        "question": "In a class, what does the 'self' parameter refer to?",
+        "answer": "the specific object the method is called on"
     },
     {
-        "question": "What does len([1, 2, 3]) return?",
-        "options": ["2", "3", "4", "Error"],
-        "answer": "3"
+        "question": "What special method runs automatically when you create a new object from a class?",
+        "answer": "__init__"
     },
     {
-        "question": "Which loop is best when you know exactly how many times to repeat?",
-        "options": ["while", "for", "do-while", "repeat"],
-        "answer": "for"
+        "question": "What keyword do you need inside a function if you want to modify a variable defined outside it?",
+        "answer": "global"
     },
     {
-        "question": "What symbol is used for a comment in Python?",
-        "options": ["//", "#", "<!-- -->", "/* */"],
-        "answer": "#"
+        "question": "How many times does 'for x in range(5):' loop?",
+        "answer": "5"
     },
     {
-        "question": "What does the 'append' method do to a list?",
-        "options": ["Removes the last item", "Adds an item to the end", "Sorts the list", "Reverses the list"],
-        "answer": "Adds an item to the end"
+        "question": "What SQL command do you use to add a new row to a table?",
+        "answer": "insert"
     },
     {
-        "question": "Which of these creates an empty list?",
-        "options": ["list()", "()", "{}", "new List()"],
-        "answer": "list()"
+        "question": "In SQLite, what does conn.commit() do?",
+        "answer": "saves your changes permanently"
     },
     {
-        "question": "What does 'input()' return in Python?",
-        "options": ["An integer", "A string", "A boolean", "A list"],
-        "answer": "A string"
+        "question": "What does .get() do when called on a Tkinter Entry widget?",
+        "answer": "returns the text currently typed in it"
+    },
+    {
+        "question": "What does json.load() do?",
+        "answer": "converts JSON text into Python dicts and lists"
+    },
+    {
+        "question": "What does an empty list evaluate to in an if statement, like 'if my_list:'?",
+        "answer": "false"
+    },
+    {
+        "question": "Why do you use .lower() on both sides when comparing user input to an answer?",
+        "answer": "to ignore capitalization differences"
     }
 ]

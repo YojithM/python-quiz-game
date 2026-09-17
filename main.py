@@ -1,5 +1,15 @@
 import database
 import tkinter as tk
+import json
+
+def load_questions(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+
+        question_list = []
+        for q in data:
+            question_list.append(Question(q['question'], q['answer']))
+        return question_list
 
 class Question:
     def __init__(self, question, answer, times_wrong = 0):
@@ -23,16 +33,7 @@ class Person:
     def add_point(self):
         self.score += 1
 
-questions = [
-    Question("What is 2 + 2?", "4"),
-    Question("What is 5 + 3?", "8"),
-    Question("What is 10 - 4?", "6"),
-    Question("What is 3 x 3?", "9"),
-    Question("What is 12 / 4?", "3"),
-    Question("What is the capital of France?", "Paris"),
-    Question("What color do you get mixing blue and yellow?", "green"),
-    Question("How many continents are there?", "7")
-]
+questions = load_questions("questions.json")
 
 player = Person(input("What is your name? "))
 
